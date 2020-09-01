@@ -45,11 +45,7 @@ var saveTasks = function() {
 };
 
 
-$(".list-group").on("click", "p", function() {
-  var text = $(this)
-  .text()
-  .trim();
-});
+
 
 // modal was triggered
 $("#task-form-modal").on("show.bs.modal", function() {
@@ -152,6 +148,13 @@ $(".list-group").on("blur", "textarea", function() {
 
   //replace textarea with p element
   $(this).replaceWith(taskP);
+
+});
+
+$(".list-group").on("click", "p", function() {
+  var text = $(this)
+  .text()
+  .trim();
 });
 
 //value of due date was changed
