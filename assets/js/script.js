@@ -82,31 +82,33 @@ $(".list-group").on("blur", "textarea", function () {
 });
 
 // due date was clicked
-$(".list-group").on("click", "span", function () {
+$(".list-group").on("click", "span", function() {
   // get current text
-  var date = $(this)
-    .text()
-    .trim();
+  var date = $(this).text().trim();
 
   // create new input element
-  var dateInput = $("<input>")
-    .attr("type", "text")
-    .addClass("form-control")
-    .val(date);
+  var dateInput = $("<input>").attr("type", "text").addClass("form-control").val(date);
 
   // swap out elements
   $(this).replaceWith(dateInput);
+
+  // enable jquery datepicker
+  dateInput.datepicker({
+    minDate: 1,
+    onClose: function() {
+      // when calendar is closed, force a change event on the dateInput
+      $("this").trigger("change");
+    }
+  });
 
   // automatically focus on new element
   dateInput.trigger("focus");
 });
 
 // value of due date was changed
-$(".list-group").on("blur", "input[type='text']", function () {
+$(".list-group").on("change", "input[type='text']", function() {
   // get current text
-  var date = $(this)
-    .val()
-    .trim();
+  var date = $(this).val().trim();
 
   // get the parent ul's id attribute
   var status = $(this)
@@ -133,19 +135,19 @@ $(".list-group").on("blur", "input[type='text']", function () {
 });
 
 // modal was triggered
-$("#task-form-modal").on("show.bs.modal", function () {
+$("#task-form-modal").on("show.bs.modal", function() {
   // clear values
   $("#modalTaskDescription, #modalDueDate").val("");
 });
 
 // modal is fully visible
-$("#task-form-modal").on("shown.bs.modal", function () {
+$("#task-form-modal").on("shown.bs.modal", function() {
   // highlight textarea
   $("#modalTaskDescription").trigger("focus");
 });
 
 // save button in modal was clicked
-$("#task-form-modal .btn-primary").click(function () {
+$("#task-form-modal .btn-primary").click(function() {
   // get form values
   var taskText = $("#modalTaskDescription").val();
   var taskDate = $("#modalDueDate").val();
@@ -166,8 +168,10 @@ $("#task-form-modal .btn-primary").click(function () {
   }
 });
 
+
+
 // remove all tasks
-$("#remove-tasks").on("click", function () {
+$("#remove-tasks").on("click", function() {
   for (var key in tasks) {
     tasks[key].length = 0;
     $("#list-" + key).empty();
@@ -240,6 +244,10 @@ $("#trash").droppable({
   out: function(event, ui) {
     console.log("out");
   }
+});
+
+$("#modalDueDate").datepicker({
+  minDate: 1
 });
 
 // load tasks for the first time
